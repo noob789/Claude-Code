@@ -33,7 +33,7 @@ sudo npm cache clean --force
 Use the official installer instead of npm:
 
 ```bash
-curl -fsSL https://cli.anthropic.com/install.sh | sh
+curl -fsSL https://claude.ai/install.sh | bash
 ```
 
 #### 4. Verify the installation
@@ -52,5 +52,6 @@ node -p process.arch  # Should print "arm64"
 |---|---|
 | `command not found: claude` after native install | Restart your terminal or run `source ~/.bashrc` |
 | `EACCES` errors during npm uninstall | Use `sudo npm uninstall -g @anthropic-ai/claude-code` |
+| `Syntax error: "(" unexpected` during install | Use `bash` not `sh`: `curl -fsSL https://claude.ai/install.sh \| bash` |
 | Native installer fails | Ensure `curl` is installed: `sudo apt-get install -y curl` |
 | Still seeing "installed via npm" warning | Make sure the npm version is fully removed: `which claude` should not point to a path under `/usr/lib/node_modules` |

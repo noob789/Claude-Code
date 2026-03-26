@@ -16,8 +16,10 @@ Claude Code installed via `npm install -g @anthropic-ai/claude-code` on NVIDIA J
 
 #### 1. Uninstall the broken installation
 
+If the original install was done with `sudo` (or the packages live under `/usr/lib/node_modules`), you must use `sudo` to uninstall:
+
 ```bash
-npm uninstall -g @anthropic-ai/claude-code
+sudo npm uninstall -g @anthropic-ai/claude-code
 ```
 
 #### 2. Clear the npm cache
@@ -25,7 +27,7 @@ npm uninstall -g @anthropic-ai/claude-code
 Old/corrupted cached packages can cause repeated failures:
 
 ```bash
-npm cache clean --force
+sudo npm cache clean --force
 ```
 
 #### 3. Remove leftover Claude Code data (optional)
@@ -56,7 +58,7 @@ sudo apt-get install -y nodejs
 #### 5. Reinstall Claude Code
 
 ```bash
-npm install -g @anthropic-ai/claude-code
+sudo npm install -g @anthropic-ai/claude-code
 ```
 
 ### Troubleshooting

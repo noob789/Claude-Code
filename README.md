@@ -2,69 +2,55 @@
 
 ## Fix: Claude Code npm Install on NVIDIA Jetson
 
-If you accidentally installed Claude Code on a Jetson device via `npm` and it's not working correctly, follow these steps to fix it.
+If you accidentally installed Claude Code on a Jetson device via `npm` instead of the native installer, follow these steps to fix it.
 
 ### The Problem
 
-Claude Code installed via `npm install -g @anthropic-ai/claude-code` on NVIDIA Jetson (ARM64/aarch64) can fail due to native binary dependencies that aren't pre-built for the Jetson's architecture. Symptoms include:
+Claude Code has a native installer that bundles the correct binaries for your platform. Installing via `npm install -g @anthropic-ai/claude-code` on Jetson (ARM64/aarch64) bypasses this and can cause:
 
-- Segfaults or crashes on launch
-- Missing native module errors (e.g., `Error: ... not a valid ELF executable`)
-- Architecture mismatch warnings during install
+- A warning that Claude Code was installed via npm and not the native installer
+- `EACCES` permission errors requiring `sudo` for every operation
+- Native module errors or architecture mismatches
 
 ### Fix Steps
 
-#### 1. Uninstall the broken installation
+#### 1. Uninstall the npm version
 
-If the original install was done with `sudo` (or the packages live under `/usr/lib/node_modules`), you must use `sudo` to uninstall:
+If the original install used `sudo` (packages in `/usr/lib/node_modules`), you need `sudo` to remove it:
 
 ```bash
 sudo npm uninstall -g @anthropic-ai/claude-code
 ```
 
-#### 2. Clear the npm cache
-
-Old/corrupted cached packages can cause repeated failures:
+#### 2. Clear the npm cache (optional)
 
 ```bash
 sudo npm cache clean --force
 ```
 
-#### 3. Remove leftover Claude Code data (optional)
+#### 3. Install via the native installer
 
-If the previous install left behind corrupted config or cache files:
+Use the official installer instead of npm:
 
 ```bash
-rm -rf ~/.claude
+curl -fsSL https://claude.ai/install.sh | sh
 ```
 
-#### 4. Verify your Node.js environment
-
-Make sure Node.js is version 18 or higher and is the correct architecture:
+#### 4. Verify the installation
 
 ```bash
-node -v           # Must be >= 18.0.0
+# Confirm claude is available
+claude --version
+
+# Confirm Node.js is native ARM64
 node -p process.arch  # Should print "arm64"
-```
-
-If `process.arch` does not print `arm64`, your Node.js binary is emulated (e.g., x86_64 under qemu). Reinstall a native ARM64 Node.js build:
-
-```bash
-# Example using NodeSource
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
-
-#### 5. Reinstall Claude Code
-
-```bash
-sudo npm install -g @anthropic-ai/claude-code
 ```
 
 ### Troubleshooting
 
 | Issue | Fix |
 |---|---|
-| `EACCES` permission errors | Use `sudo npm install -g` or fix npm prefix: `npm config set prefix ~/.npm-global` and add `~/.npm-global/bin` to your `PATH` |
-| Build failures for native modules | Install build tools: `sudo apt-get install -y build-essential python3` |
-| Still getting architecture errors | Ensure you're not running x86 Node via emulation; check with `file $(which node)` — it should say `aarch64` |
+| `command not found: claude` after native install | Restart your terminal or run `source ~/.bashrc` |
+| `EACCES` errors during npm uninstall | Use `sudo npm uninstall -g @anthropic-ai/claude-code` |
+| Native installer fails | Ensure `curl` is installed: `sudo apt-get install -y curl` |
+| Still seeing "installed via npm" warning | Make sure the npm version is fully removed: `which claude` should not point to a path under `/usr/lib/node_modules` |

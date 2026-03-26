@@ -33,7 +33,7 @@ sudo npm cache clean --force
 Use the official installer instead of npm:
 
 ```bash
-curl -fsSL https://claude.ai/install.sh | sh
+curl -fsSL https://cli.anthropic.com/install.sh | sh
 ```
 
 #### 4. Verify the installation

@@ -64,12 +64,14 @@ Before/after: use Windows `msinfo32` for model/SKU and BIOS version/date, and `n
 | Component | Before | After | Result/evidence |
 | --- | --- | --- | --- |
 | BIOS | **2.02** (09/19/2023) | pending | Ubuntu `dmidecode -s bios-version`, 2026-11-09. Target 2.05, so an update is due. |
-| EC | unknown | pending | Not exposed by `fwupdmgr get-devices` on Ubuntu. Read from BIOS setup or the Razer updater. |
+| EC | **2.01** | not needed | BIOS setup Main screen, 2026-11-09. Already at target 2.01. Do not flash. |
 | RTX 4090 vBIOS | **95.03.2B.00.35** | pending | `nvidia-smi` on Ubuntu, driver 595.99.02, 2026-11-09. Target 95.03.2B.40.9E, so an update is due. |
 | PD | unknown | pending | Not exposed on Ubuntu. Read from the Razer PD updater. |
-| Keyboard | unknown | pending | Not exposed on Ubuntu. Read from the Razer EC/keyboard updater. |
+| Keyboard | **1.05.00.00** (shown as MCU FW Version) | pending | BIOS setup Main screen, 2026-11-09. Target 1.06.00, so an update is due. |
 
 Ubuntu baseline captured 2026-11-09: Product `Blade 16 - RZ09-0483`, SKU `RZ09-0483UEJ4`, board version 9.04. fwupd lists the BIOS as an Internal SPI Controller at 2.02 with no LVFS update offered, and a USB4 host controller at 40.02. None of the Razer updaters are available through fwupd, so every flash in this plan happens from native Windows.
+
+BIOS setup photographed 2026-11-09 (AMI Aptio 2.22.1287): Secure Boot Disabled, System Mode Deployed; GPU MODE = NVIDIA Dynamic Display Switch (hybrid, iGPU drives display); Intel VMD Disabled; UnderVolt Protection Disabled; Fast Boot Disabled; boot order Ubuntu, Windows Boot Manager, ubuntu, USB; ME FW 16.1.25.1991; 32 GB DDR5-5600; i9-13950HX. Restore these after the BIOS flash if anything resets.
 
 Also record Windows build, update failures, any Windows NVIDIA driver change, and any security/BIOS settings changed. Verify encryption protection is restored and both operating systems still boot. **An updater restart alone is not proof of success.**
 
